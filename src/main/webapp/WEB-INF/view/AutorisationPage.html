@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/styles/bootstrap.min.css">
+    <script type="text/javascript" src="/scripts/Autorisation.js"></script>
+    <script type="text/javascript" src="/scripts/jquery.min.js"></script>
+    <script type="text/javascript" src="/scripts/bootstrap.min.js"></script>
+</head>
+<body onload="Show()">
+
+<!-- Модальное окно -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Authorization page</h4>
+            </div>
+            <div class="modal-body">
+                <label for="email">Email *</label>
+                <input id="email" type="text" name="name" class="form-control" placeholder="Please enter your email *" required="required" data-error="Firstname is required.">
+
+                <label for="password">Password *</label>
+                <input id="password" type="password" name="name" class="form-control" placeholder="Please enter your password *" required="required" data-error="Firstname is required.">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="sendAutoInformationToServer()">Enter</button><br>
+                <a href="http://localhost:8080/register">register</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
