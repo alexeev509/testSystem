@@ -26,13 +26,13 @@ public class StudetsService {
     }
 
     public void saveStudent(String name, String surname,String patronymic,String email, String group,String password){
-        String createNewStudent = "INSERT INTO STUDENTS (nameStd,surname,lastname,groupNum,email,password) VALUES (?,?,?,?,?,?)";
-        jdbcTemplate.update(createNewStudent,name,surname,patronymic,group,email,password);
+            String createNewStudent = "INSERT INTO STUDENTS (name_std,surname,lastname,group_num,email,password) VALUES (?,?,?,?,?,?)";
+            jdbcTemplate.update(createNewStudent,name,surname,patronymic,group,email,password);
     }
 
     public void deleteStudent(String id){
-        String deleteStudentSql="DELETE FROM STUDENTS WHERE id=?";
-        int rows=jdbcTemplate.update(deleteStudentSql,id);
+        String deleteStudentSql="DELETE FROM STUDENTS WHERE STUDENTS.id=?";
+        int rows = jdbcTemplate.update(deleteStudentSql, Integer.valueOf(id));
         System.out.println(rows);
     }
 
@@ -44,8 +44,7 @@ public class StudetsService {
 
     public String findStudentById(String id){
         String FIND_STUDENT_IN_BD="SELECT * FROM STUDENTS WHERE id=?";
-        System.out.println(jdbcTemplate.query(FIND_STUDENT_IN_BD,new Object[]{id}, new StudentMapper()));
-        return  new Gson().toJson(jdbcTemplate.query(FIND_STUDENT_IN_BD,new Object[]{id}, new StudentMapper()));
+        return  new Gson().toJson(jdbcTemplate.query(FIND_STUDENT_IN_BD,new Object[]{Integer.valueOf(id)}, new StudentMapper()));
     }
 
 

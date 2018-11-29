@@ -3,14 +3,12 @@ package testSystem.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import testSystem.services.StudetsService;
 import testSystem.services.TestService;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by apathy on 20.09.18.
@@ -22,7 +20,6 @@ public class MainPageController {
 
     private final StudetsService studetsService;
     private final TestService testService;
-
     @Autowired
     public MainPageController(StudetsService studetsService,TestService testService) {
         this.studetsService = studetsService;
@@ -74,22 +71,28 @@ public class MainPageController {
     //change post to get
     @RequestMapping(value = "/autoCheck", method = RequestMethod.POST)
     public @ResponseBody String autorisationCheck(@RequestParam (value="email") String email,
-                                         @RequestParam (value="password") String password){
+                                         @RequestParam (value="password") String password,
+                                                  HttpSession session){
+        session.setAttribute("email",email);
+        session.setMaxInactiveInterval(3600);
         return studetsService.findStudent(email,password);
     }
 
     @RequestMapping(value = "/testPage", method = RequestMethod.GET)
-    public String testPage(@RequestParam (value="id") String id){
+    public String testPage(@RequestParam (value="id") String id,HttpSession session){
+        System.out.println(session.getId());
         return "TestPage";
     }
 
     @RequestMapping(value = "/getStudentById", method = RequestMethod.GET)
     public @ResponseBody String getStudentById(@RequestParam (value="id") String id){
+        System.out.println(id);
         return studetsService.findStudentById(id);
     }
 
     @RequestMapping(value = "/getTest", method = RequestMethod.GET)
-    public  ResponseEntity<String> getTest(@RequestParam (value="testName") String testName) {
+    public  ResponseEntity<String> getTest(@RequestParam (value="testName") String testName,HttpSession session) {
+        session.setAttribute("testName",testName);
         return testService.readTest(testName);
     }
 
@@ -97,7 +100,7 @@ public class MainPageController {
     @RequestMapping(value = "/saveTestResults", method = RequestMethod.POST)
     public @ResponseBody void saveTestResults(@RequestParam (value="answers") String answers,
                                               @RequestParam (value="id") String id,
-                                              @RequestParam (value="testName") String testName){
+                                              @RequestParam (value="testName") String testName) throws IOException {
         testService.saveTestResults(answers,id,testName);
     }
 

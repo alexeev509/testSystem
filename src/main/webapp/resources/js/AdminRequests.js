@@ -1,13 +1,23 @@
 var xhr = new XMLHttpRequest();
 var mass;
 
+var hostName = window.location.hostname;
+if(hostName=='localhost'){
+    hostName+=":8080";
+    hostName="http://"+hostName;
+}else {
+    hostName="https://"+hostName;
+}
+
+console.log(hostName.toString());
+
 xhr.onreadystatechange=function () {
     console.log(xhr.responseText);
     mass=xhr.responseText;
     mass=JSON.parse(mass);
     console.log(mass[0]);
 }
-xhr.open("GET", 'http://localhost:8080/getallstudents', false);
+xhr.open("GET", hostName+'/getallstudents', false);
 xhr.send();
 
 function showAllStudents() {
@@ -33,7 +43,7 @@ function showAllStudents() {
 
 function deleteStudent(id) {
     var body = 'id=' + id;
-    xhr.open("POST", 'http://localhost:8080/deleteStudent', true);
+    xhr.open("POST", hostName+'/deleteStudent', true);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhr.send(body);
     //refresh of the page
@@ -41,7 +51,7 @@ function deleteStudent(id) {
 }
 
 function saveTestResults() {
-    xhr.open("POST", 'http://localhost:8080/saveAllTestResultsInFile', true);
+    xhr.open("POST", hostName+'/saveAllTestResultsInFile', true);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhr.send();
 }

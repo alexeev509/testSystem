@@ -11,13 +11,15 @@ import testSystem.mappers.StudentMapper;
 
 import javax.sql.DataSource;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class TestService {
 
     private final static String TEST_FILES_PATH="/Users/apathy/IdeaProjects/testSystem/src/main/resources/tests/";
-    private final static String SAVE_TEST_RESULT = "INSERT INTO testResults (student_id,test_name,result) VALUES (?,?,?)";
+    private final static String SAVE_TEST_RESULT = "INSERT INTO test_results (student_id,test_name,result) VALUES (?,?,?)";
     private DataSource driverManagerDataSource;
     private JdbcTemplate jdbcTemplate;
 
@@ -38,14 +40,51 @@ public class TestService {
     }
 
 
-    public void saveTestResults(String actuallyAnswers,String id,String testName){
-        System.out.println(actuallyAnswers);
-        String expectedAnswers=readTestFiles("Answers_"+testName);
-        String resultOfTheTest=checkAnswers(actuallyAnswers,expectedAnswers);
-        jdbcTemplate.update(SAVE_TEST_RESULT,id,testName,resultOfTheTest);
+    public void saveTestResults(String actuallyAnswers,String id,String testName) throws IOException {
+//        String expectedAnswers=readTestFiles("Answers_"+testName);
+//        String resultOfTheTest=checkAnswers(actuallyAnswers,expectedAnswers);
+//        jdbcTemplate.update(SAVE_TEST_RESULT, Long.valueOf(id), testName, resultOfTheTest);
+        System.out.println("i am here"+testName);
+        List<String> expectedAnswers = readAnswers("Answers_" + testName);
+        List<String> actAnswers=Arrays.asList(actuallyAnswers.split("___"));
+        String resultOfTheTest=checkAnswers(actAnswers,expectedAnswers);
+
 
     }
-    public String readTestFiles(String testName){
+    private List<String> readAnswers(String fileName) throws IOException {
+        List<String> massOfAnswers=new ArrayList<String>();
+        FileInputStream fstream = new FileInputStream(TEST_FILES_PATH+fileName+".txt");
+        BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+        String strLine;
+        while ((strLine = br.readLine()) != null){
+            massOfAnswers.add(strLine);
+        }
+        return massOfAnswers;
+    }
+
+    private String checkAnswers(List<String> actuallyAnswers, List<String> expectedAnswers){
+
+        double rightAnswers=0;
+        for (int i = 0; i < expectedAnswers.size(); i++) {
+            String[] expectedAnswerOnQuestion=expectedAnswers.get(i).split(" ");
+            String[] actuallyAnswerOnAQuestion=actuallyAnswers.get(i).split(" ");
+            for (int j = 0; j < expectedAnswerOnQuestion.length && actuallyAnswerOnAQuestion.length==expectedAnswerOnQuestion.length; j++) {
+                if (!actuallyAnswerOnAQuestion[j].equals(expectedAnswerOnQuestion[j])) {
+                    break;
+                }
+                if(j==expectedAnswerOnQuestion.length-1){
+                    ++rightAnswers;
+                }
+            }
+        }
+
+        System.out.println(rightAnswers/expectedAnswers.size()*100+"%");
+        return rightAnswers/5*100+"%";
+    }
+
+
+
+    private String readTestFiles(String testName){
         String textOfTest="";
         InputStreamReader reader = null;
         try {
@@ -64,54 +103,6 @@ public class TestService {
         }
         return textOfTest;
     }
-
-    public String checkAnswers(String actuallyAnswers, String expectedAnswers){
-        String[] expAnswers=expectedAnswers.split(" ");
-        String[] actAnswers=getActAnswerInNormalForm(actuallyAnswers,expAnswers.length);
-        double rightAnswers=0;
-        int step=expAnswers.length>10?3:2;
-
-        for (int i = 0; i < actAnswers.length; i=i+step) {
-            if(expAnswers.length>10){
-                if(actAnswers[i].equals(expAnswers[i]) && actAnswers[i+1].equals(expAnswers[i+1]) && actAnswers[i+2].equals(expAnswers[i+2])){
-                    ++rightAnswers;
-                }
-            }
-            else {
-                if(actAnswers[i].equals(expAnswers[i]) && actAnswers[i+1].equals(expAnswers[i+1])){
-                    ++rightAnswers;
-                }
-            }
-        }
-        System.out.println(rightAnswers/5*100+"%");
-        return rightAnswers/5*100+"%";
-    }
-
-    public String[]getActAnswerInNormalForm(String actuallyAnswers,int len){
-        String[] massOfAnswers=actuallyAnswers.split("___");
-        String[] resultMass=new String[len];
-        int counter=0;
-        for (int i = 0; i < massOfAnswers.length; i++) {
-            String[] massOfAnswerOnQuestion=massOfAnswers[i].split(" ");
-            //If we have 0.5 right of the question we think that this answer is wrong
-            if(massOfAnswerOnQuestion.length<2){
-                resultMass[counter++]="";
-                resultMass[counter++]="";
-                if(len>10){
-                    resultMass[counter++]="";
-                }
-            }
-            else {
-                resultMass[counter++]=massOfAnswerOnQuestion[0];
-                resultMass[counter++]=massOfAnswerOnQuestion[1];
-                if(len>10){
-                    resultMass[counter++]=massOfAnswerOnQuestion[2];
-                }
-            }
-        }
-        return resultMass;
-    }
-
 
     public void saveTestResultsInFile(){
 
