@@ -11,7 +11,7 @@ if(hostName=='localhost'){
 
 console.log(hostName.toString());
 
-xhr.onreadystatechange=function () {
+xhr.onload = function () {
     console.log(xhr.responseText);
     mass=xhr.responseText;
     mass=JSON.parse(mass);
@@ -20,6 +20,10 @@ xhr.onreadystatechange=function () {
 xhr.open("GET", hostName+'/getallstudents', false);
 xhr.send();
 
+function logout() {
+    xhr.open("GET", hostName + '/logout', false);
+    xhr.send();
+}
 function showAllStudents() {
     for(var i=0;i<mass.length;i++) {
         // document.getElementById('students').innerText += "name:=" + mass[i].name;

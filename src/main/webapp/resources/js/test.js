@@ -1,11 +1,13 @@
 var id=window.location.href.split('=')[1];
 var xhr = new XMLHttpRequest();
 var xhr2 = new XMLHttpRequest();
+var xhr3 = new XMLHttpRequest();
 var mass;
 var counter=0;
 var massOfTasks;
 var massOfAnswers=[];
 var testName;
+var nameOfTheTests = [];
 //alert( document.cookie );
 var hostName = window.location.hostname;
 if(hostName=='localhost'){
@@ -31,6 +33,13 @@ xhr2.onload=function () {
     document.getElementById('footerOfTestCard').style.visibility='visible';
 };
 
+xhr3.onload = function () {
+    nameOfTheTests = xhr3.responseText.split(' ');
+};
+
+xhr3.open("GET", hostName + "/getAllTestNames", true);
+xhr3.send();
+
 xhr.open("GET", hostName+'/getStudentById?id='+id, false);
 xhr.send();
 
@@ -48,6 +57,8 @@ window.onload=function innerTxt () {
         xhr2.send();
     }
 
+    for (var i = 0; i < nameOfTheTests.length; i++)
+        document.getElementById("nameOfTests").innerHTML += "<a class='dropdown-item' href='#'>" + nameOfTheTests[i] + "</a>"
     // var answersFromCookie=JSON.parse(getCookie("answers"));
     // alert(answersFromCookie.length);
     // if(answersFromCookie!=undefined){

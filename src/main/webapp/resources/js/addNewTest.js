@@ -57,6 +57,17 @@ function finish() {
     xhr.open("POST", hostName + '/saveNewTest', false);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=utf-8");
     console.log(massOfQuestions);
-    var body = 'questions=' + massOfQuestions + '&answers=' + massOfAnswers + '&testName=' + testName;
+    //prepare questions and answers
+    var questions = "";
+    for (var i = 0; i < massOfQuestions.length - 1; i++)
+        questions += massOfQuestions[i] + "\n" + "_____" + "\n";
+    questions += massOfQuestions[massOfQuestions.length - 1];
+    //
+    var answers = "";
+    for (var i = 0; i < massOfAnswers.length - 1; i++)
+        answers += massOfAnswers[i].trim() + "\n";
+    answers += massOfAnswers[massOfAnswers.length - 1];
+    //
+    var body = 'questions=' + questions + '&answers=' + answers + '&testName=' + testName;
     xhr.send(body);
 }

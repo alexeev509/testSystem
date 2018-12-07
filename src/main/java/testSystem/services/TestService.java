@@ -48,7 +48,7 @@ public class TestService {
         List<String> expectedAnswers = readAnswers("Answers_" + testName);
         List<String> actAnswers=Arrays.asList(actuallyAnswers.split("___"));
         String resultOfTheTest=checkAnswers(actAnswers,expectedAnswers);
-
+        jdbcTemplate.update(SAVE_TEST_RESULT, Long.valueOf(id), testName, resultOfTheTest);
 
     }
     private List<String> readAnswers(String fileName) throws IOException {
@@ -79,7 +79,7 @@ public class TestService {
         }
 
         System.out.println(rightAnswers/expectedAnswers.size()*100+"%");
-        return rightAnswers/5*100+"%";
+        return rightAnswers / expectedAnswers.size() * 100 + "%";
     }
 
 
@@ -125,17 +125,28 @@ public class TestService {
             writer.flush();
 
             path = TEST_FILES_PATH + "Answers_" + testName + ".txt";
-            String ans = "";
             f = new File(path);
-            writer = new FileWriter(TEST_FILES_PATH + "Answers_" + testName + ".txt", false);
-            for (int i = 0; i < answers.split(",").length - 1; i++) {
-                ans += answers.split(",")[i] + "\n";
-            }
-            ans += answers.split(",")[answers.split(",").length];
-            writer.write(ans);
+            writer = new FileWriter(path, false);
+            writer.write(answers);
+            writer.flush();
 
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
+    }
+
+    public String getAllTestNames() {
+        String namesOfFiles = "";
+        File[] folderEntries = new File(TEST_FILES_PATH).listFiles();
+        for (int i = 0; i < folderEntries.length - 1; i++) {
+            if (!folderEntries[i].getName().contains("Answers_"))
+                namesOfFiles += folderEntries[i].getName().split("\\.")[0] + " ";
+        }
+        if (!folderEntries[folderEntries.length - 1].getName().contains("Answers_"))
+            namesOfFiles += folderEntries[folderEntries.length - 1].getName().split("\\.")[0];
+
+        namesOfFiles = namesOfFiles.trim();
+        System.out.println(namesOfFiles);
+        return namesOfFiles;
     }
 }

@@ -64,7 +64,6 @@ public class MainPageController {
     @RequestMapping(value = "/deleteStudent", method = RequestMethod.POST)
     public @ResponseBody
     void deleteStudent(@RequestParam(value = "id") String id) {
-        System.out.println("id=" + id);
         studetsService.deleteStudent(id);
         //i must create response if all is ok
     }
@@ -74,14 +73,6 @@ public class MainPageController {
         return "AutorisationPage";
     }
 
-//    //change post to get
-//    @RequestMapping(value = "/autoCheck", method = RequestMethod.POST)
-//    public @ResponseBody
-//    String autorisationCheck(@RequestParam(value = "email") String email,
-//                             @RequestParam(value = "password") String password) {
-//        System.out.println("hello");
-//        return studetsService.findStudent(email, password);
-//    }
 
     @RequestMapping(value = "/testPage", method = RequestMethod.GET)
     public String testPage(@RequestParam(value = "id") String id) {
@@ -91,7 +82,6 @@ public class MainPageController {
     @RequestMapping(value = "/getStudentById", method = RequestMethod.GET)
     public @ResponseBody
     String getStudentById(@RequestParam(value = "id") String id) {
-        System.out.println(id);
         return studetsService.findStudentById(id);
     }
 
@@ -129,6 +119,13 @@ public class MainPageController {
                      @RequestParam(value = "testName") String testName) throws IOException {
         System.out.println(questions + "\n" + answers + "\n" + testName);
         testService.saveNewTest(testName, questions, answers);
+    }
+
+
+    @RequestMapping(value = "/getAllTestNames", method = RequestMethod.GET)
+    public @ResponseBody
+    String getAllTestNames() {
+        return testService.getAllTestNames();
     }
 
 }
