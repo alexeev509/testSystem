@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/styles/bootstrap.min.css">
+    <script type="text/javascript" src="/scripts/jquery.min.js"></script>
+    <script type="text/javascript" src="/scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/scripts/addNewTest.js"></script>
+</head>
+<body>
+
+
+<div class="card text-white bg-dark ">
+    <div class="card-header"><h1 class="text-center">New test</h1></div>
+    <div class="card-body">
+        <label for="test_name">TestName: </label>
+        <input id="test_name" type="text" name="name" class="form-control" required="required">
+        <label for="question">Question: </label>
+        <textarea class="form-control" id="question" rows="6"></textarea>
+        <label for="test_answer">TestAnswer: </label>
+        <input id="test_answer" type="text" name="answer" class="form-control" required="required">
+    </div>
+    <div class="card-footer">
+        <div class="row">
+            <div class="col-lg-4">
+                <button type="button" class="btn btn-success" onclick='prevQuestion()'> Previous</button>
+                <button type="button" class="btn btn-success" onclick='nextQuestion()'> Next</button>
+                <button type="button" class="btn btn-success" onclick='finish()'> Finish</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
