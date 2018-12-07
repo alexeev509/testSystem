@@ -48,13 +48,13 @@ window.onload=function innerTxt () {
         xhr2.send();
     }
 
-    var answersFromCookie=JSON.parse(getCookie("answers"));
-    alert(answersFromCookie.length);
-    if(answersFromCookie!=undefined){
-        for(var i=0; i<answersFromCookie.length;i++){
-            massOfAnswers[i]=answersFromCookie[i];
-        }
-    }
+    // var answersFromCookie=JSON.parse(getCookie("answers"));
+    // alert(answersFromCookie.length);
+    // if(answersFromCookie!=undefined){
+    //     for(var i=0; i<answersFromCookie.length;i++){
+    //         massOfAnswers[i]=answersFromCookie[i];
+    //     }
+    // }
 };
 
 function startTest() {
@@ -114,4 +114,8 @@ function getCookie(name) {
         "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
     ));
     return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
+function logout() {
+    window.location.href = hostName + '/logout';
 }

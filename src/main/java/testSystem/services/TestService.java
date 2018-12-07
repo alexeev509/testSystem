@@ -113,4 +113,29 @@ public class TestService {
         System.out.println(jdbcTemplate.query(sql, new StudentMapper()));
         return new Gson().toJson(jdbcTemplate.query(sql, new StudentMapper())).toString();
     }
+
+    public void saveNewTest(String testName, String questions, String answers) {
+        String path = TEST_FILES_PATH + testName + ".txt";
+        File f = new File(path);
+        try {
+            FileWriter writer = new FileWriter(TEST_FILES_PATH + testName + ".txt", false);
+            // запись всей строки
+            writer.write(questions);
+            // запись по символам
+            writer.flush();
+
+            path = TEST_FILES_PATH + "Answers_" + testName + ".txt";
+            String ans = "";
+            f = new File(path);
+            writer = new FileWriter(TEST_FILES_PATH + "Answers_" + testName + ".txt", false);
+            for (int i = 0; i < answers.split(",").length - 1; i++) {
+                ans += answers.split(",")[i] + "\n";
+            }
+            ans += answers.split(",")[answers.split(",").length];
+            writer.write(ans);
+
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
 }

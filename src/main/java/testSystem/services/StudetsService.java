@@ -4,9 +4,11 @@ import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import testSystem.entity.Student;
 import testSystem.mappers.StudentMapper;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 @Service
 public class StudetsService {
@@ -45,6 +47,11 @@ public class StudetsService {
     public String findStudentById(String id){
         String FIND_STUDENT_IN_BD="SELECT * FROM STUDENTS WHERE id=?";
         return  new Gson().toJson(jdbcTemplate.query(FIND_STUDENT_IN_BD,new Object[]{Integer.valueOf(id)}, new StudentMapper()));
+    }
+
+    public List<Student> findStudentByEmail(String email) {
+        String FIND_STUDENT_IN_BD = "SELECT * FROM STUDENTS WHERE email=?";
+        return jdbcTemplate.query(FIND_STUDENT_IN_BD, new Object[]{email}, new StudentMapper());
     }
 
 

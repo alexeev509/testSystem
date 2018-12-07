@@ -6,6 +6,7 @@ public class Student {
     private String patronymic;
     private String group;
     private String email;
+    private String password;
     private int id;
 
     public Student() {
@@ -19,7 +20,8 @@ public class Student {
                 ", patronymic='" + patronymic + '\'' +
                 ", group='" + group + '\'' +
                 ", email='" + email + '\'' +
-                ", id='" + id + '\'' +
+                ", password='" + password + '\'' +
+                ", id=" + id +
                 '}';
     }
 
@@ -69,5 +71,13 @@ public class Student {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

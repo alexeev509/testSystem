@@ -57,3 +57,12 @@ function saveTestResults() {
 }
 
 
+// function addNewTest() {
+//     document.getElementById("studentTable").style.visibility="hidden";
+//     document.getElementById("addNewTestForm").style.visibility="visible";
+// }
+//
+// Window.onload=function () {
+//     document.getElementById("addNewTestForm").style.visibility="hidden";
+// }
+

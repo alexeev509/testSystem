@@ -17,6 +17,7 @@ public class StudentMapper implements RowMapper {
         student.setSurname(rs.getString("surname"));
         student.setPatronymic(rs.getString("lastname"));
         student.setGroup(rs.getString("group_num"));
+        student.setPassword(rs.getString("password"));
         return student;
     }
 }

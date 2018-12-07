@@ -13,23 +13,35 @@
 <!-- Модальное окно -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <form class="modal-content" action="/j_spring_security_check" method="post">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel">Authorization page</h4>
             </div>
             <div class="modal-body">
+
                 <label for="email">Email *</label>
-                <input id="email" type="text" name="name" class="form-control" placeholder="Please enter your email *" required="required" data-error="Firstname is required.">
+                <input id="email" type="text" name="j_username" class="form-control"
+                       placeholder="Please enter your email *" required="required" data-error="Firstname is required.">
 
                 <label for="password">Password *</label>
-                <input id="password" type="password" name="name" class="form-control" placeholder="Please enter your password *" required="required" data-error="Firstname is required.">
+                <input id="password" type="password" name="j_password" class="form-control"
+                       placeholder="Please enter your password *" required="required"
+                       data-error="Firstname is required.">
+
+
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="sendAutoInformationToServer()">Enter</button><br>
+                <button type="submit" class="btn btn-primary">Enter</button>
+                <br>
                 <a  id="regReference">register</a>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 </body>
 </html>
+
+
+<!--<input type="text" class="form-control" name="j_username" placeholder="Email address" required autofocus value="user">-->
+<!--<input type="password" class="form-control" name="j_password" placeholder="Password" required value="password">-->
+<!--<button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>-->
