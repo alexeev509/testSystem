@@ -25,7 +25,8 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
                 .addResourceLocations("/resources/js/")
                 .addResourceLocations("bower_components/jquery/dist/")
                 .addResourceLocations("bower_components/bootstrap/dist/js/")
-                .addResourceLocations("bower_components/popper.js/");
+                .addResourceLocations("bower_components/popper.js/")
+                .addResourceLocations("bower_components/bootstrap-validator/dist/");
     }
 
 //    @Bean

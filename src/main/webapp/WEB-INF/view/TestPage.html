@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="/styles/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/styles.css">
     <script type="text/javascript" src="/scripts/test.js"></script>
     <!--this is bad!-->
     <script type="text/javascript" src="/scripts/dist/umd/popper.min.js"></script>
@@ -20,39 +21,40 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">User Information <span class="sr-only">(current)</span></a>
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="showUserInfo()">User Information</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Tests</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Contact information</a>
+                <a class="nav-link" href="#" onclick="viewTestResults()">View test results</a>
             </li>
         </ul>
-        <button role="button" class="btn btn-lg btn-danger" onclick="logout()">LogOut</button>
     </div>
+    <form class="form-inline">
+        <a href="/logout">
+            <button type="button" class="btn btn-lg btn-danger">LogOut</button>
+        </a>
+    </form>
 </nav>
 <br>
 <div class="row">
-    <div class="col-lg-4">
-        <div class="card text-white bg-dark mb-3">
-            <div class="card-header"><h1 class="text-center">User information</h1></div>
-            <div class="card-body">
-                <label for="form_name">Firstname: </label>
-                <input id="form_name" type="text" name="name" class="form-control"  required="required" disabled>
-                <label for="form_surname">Surname: </label>
-                <input id="form_surname" type="text" name="name" class="form-control"  required="required" disabled>
-                <label for="form_lastname">Lastname: </label>
-                <input id="form_lastname" type="text" name="name" class="form-control"  required="required" disabled>
-                <label for="form_group">Group: </label>
-                <input id="form_group" type="text" name="name" class="form-control"  required="required" disabled>
-                <label for="form_email">Email: </label>
-                <input id="form_email" type="text" name="name" class="form-control"  required="required" disabled>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-8">
+    <!--<div class="col-lg-4" >-->
+    <!--<div class="card text-white bg-dark mb-3">-->
+    <!--<div class="card-header"><h1 class="text-center">User information</h1></div>-->
+    <!--<div class="card-body">-->
+    <!--<label for="form_name">Firstname: </label>-->
+    <!--<input id="form_name" type="text" name="name" class="form-control"  required="required" disabled>-->
+    <!--<label for="form_surname">Surname: </label>-->
+    <!--<input id="form_surname" type="text" name="name" class="form-control"  required="required" disabled>-->
+    <!--<label for="form_lastname">Lastname: </label>-->
+    <!--<input id="form_lastname" type="text" name="name" class="form-control"  required="required" disabled>-->
+    <!--<label for="form_group">Group: </label>-->
+    <!--<input id="form_group" type="text" name="name" class="form-control"  required="required" disabled>-->
+    <!--<label for="form_email">Email: </label>-->
+    <!--<input id="form_email" type="text" name="name" class="form-control"  required="required" disabled>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <div class="col-lg-12">
         <div class="card text-white bg-dark mb-3">
             <div class="card-header"><h1 class="text-center">Tests</h1><br>
                 <div class="btn-group">
@@ -68,7 +70,7 @@
                 <button type="button" class="btn btn-danger" onclick="startTest()"> Start </button>
             </div>
             <div class="card-body" id="testQuestionsPlace">
-                here will be tests
+
             </div>
             <div class="card-footer" id="footerOfTestCard">
                 <div class='row'>
@@ -85,5 +87,67 @@
         </div>
     </div>
 </div>
+<!-- Модальное окно -->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-warning">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <!--<h4 class="modal-title">Modal title</h4>-->
+            </div>
+            <div class="modal-body bg-dark">
+                <table class="table">
+                    <caption class="table-secondary">
+                        <center><h1 id="studentFio"> Test result of </h1></center>
+                    </caption>
+                    <thead>
+                    <tr class="table-secondary">
+                        <!--<th scope="col">Number of group</th>-->
+                        <th scope="col">Test name</th>
+                        <th scope="col">Result</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tableOfTestResults">
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer bg-warning">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.модальное окно-Содержание -->
+    </div><!-- /.модальное окно-диалог -->
+</div><!-- /.модальное окно -->
+
+
+<!-- Модальное окно -->
+<div class="modal fade" id="modalUserInfo">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <!--<h4 class="modal-title">User Info</h4>-->
+            </div>
+            <div class="modal-body bg-secondary">
+                <label for="form_name">Firstname: </label>
+                <input id="form_name" type="text" name="name" class="form-control" required="required" disabled>
+                <label for="form_surname">Surname: </label>
+                <input id="form_surname" type="text" name="name" class="form-control" required="required" disabled>
+                <label for="form_lastname">Lastname: </label>
+                <input id="form_lastname" type="text" name="name" class="form-control" required="required" disabled>
+                <label for="form_group">Group: </label>
+                <input id="form_group" type="text" name="name" class="form-control" required="required" disabled>
+                <label for="form_email">Email: </label>
+                <input id="form_email" type="text" name="name" class="form-control" required="required" disabled>
+            </div>
+            <div class="modal-footer bg-secondary">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.модальное окно-Содержание -->
+    </div><!-- /.модальное окно-диалог -->
+</div><!-- /.модальное окно -->
 </body>
 </html>

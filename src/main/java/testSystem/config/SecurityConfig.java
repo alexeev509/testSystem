@@ -6,6 +6,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import testSystem.handlers.LoginFailHandler;
+import testSystem.handlers.LogoutHandlerImpl;
 import testSystem.handlers.Securityhandler;
 import testSystem.services.UserService;
 
@@ -27,10 +29,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/register", "/scripts/**", "/styles/**")
+                .antMatchers("/register", "/scripts/**", "/styles/**", "/addNewStudent**")
                 .permitAll()
                 .antMatchers("/testPage{\\id+}").hasRole("USER")
                 .antMatchers("/admin").hasRole("ADMIN")
+                //.antMatchers("/admin","/getallstudents").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -39,14 +42,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("j_username")
                 .passwordParameter("j_password")
                 .successHandler(new Securityhandler())
+                //.failureHandler(new LoginFailHandler())
+                .failureUrl("/autorisation?error")
                 .permitAll()
                 .and()
                 .logout()
-                .permitAll()
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/autorisation")
+                .addLogoutHandler(new LogoutHandlerImpl())
+                //.logoutSuccessUrl("/autorisation")
                 .deleteCookies("testName", "answers")
-                .invalidateHttpSession(true);
+                .invalidateHttpSession(true)
+                .logoutSuccessHandler(new LogoutHandlerImpl())
+                .permitAll()
+                .and()
+                .portMapper()
+                .http(8080)
+                .mapsTo(443);
+
+        //необходимо разобраться с https при логауте
+//                .and()
+//                .requiresChannel()
+//                .anyRequest()
+//                .requiresSecure();
+
 
     }
 
@@ -61,7 +79,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        //auth.inMemoryAuthentication().withUser("user").password("594012").roles("USER");
         auth.userDetailsService(userService);
+
     }
 
 

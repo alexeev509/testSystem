@@ -1,4 +1,9 @@
 function Show() {
+    document.getElementById('AuthCreditsMessage').style.visibility = 'hidden';
+    if (window.location.toString().indexOf('error') != -1) {
+        document.getElementById('AuthCreditsMessage').style.visibility = 'visible';
+    }
+
     document.getElementById('regReference').setAttribute('href', '/register');
     $('#myModal').modal('show');
 }

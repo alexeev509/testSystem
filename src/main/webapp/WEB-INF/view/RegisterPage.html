@@ -6,8 +6,10 @@
     <title>Title</title>
     <link rel="stylesheet" href="/styles/bootstrap.min.css">
     <script type="text/javascript" src="/scripts/jquery.min.js"></script>
+    <script type="text/javascript" src="/scripts/dist/umd/popper.min.js"></script>
     <script type="text/javascript" src="/scripts/bootstrap.min.js"></script>
     <script type="text/javascript" src="/scripts/registerRequests.js"></script>
+    <!--<script type="text/javascript" src="/scripts/validator.js"></script>-->
 </head>
 <body>
 <div class="container">
@@ -23,26 +25,32 @@
                     <!--   <p class="lead">Bootstrap contact form with PHP and AJAX add Google's ReCaptcha.</p>-->
 
 
-                    <form id="contact-form" method="post" role="form">
+
 
                         <div class="controls">
                                     <div class="form-group">
                                         <label for="form_name">Firstname *</label>
-                                        <input id="form_name" type="text" name="name" class="form-control" placeholder="Please enter your firstname *" required="required" data-error="Firstname is required.">
-                                        <div class="help-block with-errors"></div>
+                                        <input id="form_name" type="text" name="name" class="form-control"
+                                               placeholder="Please enter your firstname *" required="required"
+                                               oninput="validation(this)">
+                                        <div class="invalid-feedback">You must write your name</div>
                                     </div>
 
 
                                     <div class="form-group">
-                                        <label for="form_lastname">Lastname *</label>
-                                        <input id="form_lastname" type="text" name="surname" class="form-control" placeholder="Please enter your lastname *" required="required" data-error="Lastname is required.">
-                                        <div class="help-block with-errors"></div>
+                                        <label for="form_lastname">Surname *</label>
+                                        <input id="form_lastname" type="text" name="surname" class="form-control"
+                                               placeholder="Please enter your lastname *" required="required"
+                                               oninput="validation(this)">
+                                        <div class="invalid-feedback">You must write your surname</div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="form_patronymic">Lastname *</label>
-                                        <input id="form_patronymic" type="text" name="patronymic" class="form-control" placeholder="Please enter your lastname *" required="required" data-error="Patronymic is required.">
-                                        <div class="help-block with-errors"></div>
+                                        <label for="form_patronymic">Patronymic *</label>
+                                        <input id="form_patronymic" type="text" name="patronymic" class="form-control"
+                                               placeholder="Please enter your lastname *" required="required"
+                                               oninput="validation(this)">
+                                        <div class="invalid-feedback">You must write your lastname</div>
                                     </div>
                             </div>
 
@@ -51,16 +59,21 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="form_email">Email *</label>
-                                        <input id="form_email" type="email" name="email" class="form-control" placeholder="Please enter your email *" required="required" data-error="Valid email is required.">
-                                        <div class="help-block with-errors"></div>
+                                        <input id="form_email" type="email" name="email" class="form-control"
+                                               placeholder="Please enter your email *" required="required"
+                                               oninput="checkEmail(this)"
+                                               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+                                        <div class="invalid-feedback" id="emailFeedBack">You must write your email</div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="form_num">Number of group *</label>
-                                        <input id="form_num" type="number" name="phone" class="form-control" placeholder="Please enter your number of group">
-                                        <div class="help-block with-errors"></div>
+                                        <input id="form_num" type="text" name="phone" class="form-control"
+                                               placeholder="Please enter your number of group"
+                                               oninput="validation(this)">
+                                        <div class="invalid-feedback">You must write your number of group</div>
                                     </div>
                                 </div>
                             </div>
@@ -70,29 +83,32 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="form_password">Password *</label>
-                                    <input id="form_password" type="password" name="password" class="form-control" placeholder="Please enter your password *" required="required" data-error="Bad password.">
-                                    <div class="help-block with-errors"></div>
+                                    <input id="form_password" type="password" name="password" class="form-control"
+                                           placeholder="Please enter your password *" data-minlength="6" required
+                                           oninput="checkPassword(this)">
+                                    <div class="help-block">Minimum of 6 characters</div>
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="form_passwordR">Repeat password *</label>
-                                    <input id="form_passwordR" type="password" name="passwordR" class="form-control" placeholder="Please repeat your password">
-                                    <div class="help-block with-errors"></div>
+                                    <input id="form_passwordR" type="password" name="passwordR" class="form-control"
+                                           placeholder="Please repeat your password"
+                                           oninput="checkRepeatPassword(this)">
+                                    <div class="invalid-feedback">Your passwords must be same</div>
                                 </div>
                             </div>
                         </div>
 
-
-
-                    </form>
                     <div class="row">
                         <div class="col-md-12">
-                            <input type="submit" class="btn btn-success btn-send" value="Send message" onclick="sendRegisterInformation()">
+                            <input type="button" class="btn btn-success btn-send" value="Send message"
+                                   onclick="sendRegisterInformation()">
                         </div>
 
                     </div>
+
 
                 </div><!-- /.col-lg-8 col-lg-offset-2 -->
 
@@ -104,5 +120,6 @@
 
 
 </div> <!-- /.container-->
+
 </body>
 </html>

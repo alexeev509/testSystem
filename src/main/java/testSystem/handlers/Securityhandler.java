@@ -2,6 +2,8 @@ package testSystem.handlers;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import testSystem.Enum.Role;
 import testSystem.entity.User;
 
@@ -14,6 +16,7 @@ import java.util.List;
 public class Securityhandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
+        System.out.println("we are trying to enter");
         User user = (User) authentication.getPrincipal();
         System.out.println(user.toString());
         List<Role> authorities = (List<Role>) user.getAuthorities();

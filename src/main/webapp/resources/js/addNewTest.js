@@ -53,6 +53,9 @@ function prevQuestion() {
 }
 
 function finish() {
+    massOfAnswers[size] = document.getElementById("test_answer").value;
+    massOfQuestions[size] = document.getElementById("question").value;
+
     testName = document.getElementById("test_name").value;
     xhr.open("POST", hostName + '/saveNewTest', false);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=utf-8");
@@ -70,4 +73,5 @@ function finish() {
     //
     var body = 'questions=' + questions + '&answers=' + answers + '&testName=' + testName;
     xhr.send(body);
+    window.location = hostName + "/admin";
 }

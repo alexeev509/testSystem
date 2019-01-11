@@ -1,17 +1,15 @@
 package testSystem.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import testSystem.services.AdminService;
 import testSystem.services.StudetsService;
 import testSystem.services.TestService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by apathy on 20.09.18.
@@ -19,16 +17,19 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value = "/")
+@Slf4j
 public class MainPageController {
 
 
     private final StudetsService studetsService;
     private final TestService testService;
+    private final AdminService adminService;
 
     @Autowired
-    public MainPageController(StudetsService studetsService, TestService testService) {
+    public MainPageController(StudetsService studetsService, TestService testService, AdminService adminService) {
         this.studetsService = studetsService;
         this.testService = testService;
+        this.adminService = adminService;
     }
 
     @RequestMapping("/register")
@@ -38,16 +39,16 @@ public class MainPageController {
 
     @RequestMapping(value = "/addNewStudent", method = RequestMethod.POST)
     public @ResponseBody
-    void addNewStudent(@RequestParam(value = "name") String name,
-                       @RequestParam(value = "lastname") String lastname,
-                       @RequestParam(value = "patronymic") String patronymic,
-                       @RequestParam(value = "email") String email,
-                       @RequestParam(value = "group") String group,
-                       @RequestParam(value = "password") String password
+    String addNewStudent(@RequestParam(value = "name") String name,
+                         @RequestParam(value = "lastname") String lastname,
+                         @RequestParam(value = "patronymic") String patronymic,
+                         @RequestParam(value = "email") String email,
+                         @RequestParam(value = "group") String group,
+                         @RequestParam(value = "password") String password
     ) {
         System.out.println("name=" + name + " lastname=" + lastname + " patronymic=" + patronymic + " email=" + email + " group=" + group + " password=" + password);
-        studetsService.saveStudent(name, lastname, patronymic, email, group, password);
-        studetsService.findAllStudents();
+        return studetsService.saveStudent(name, lastname, patronymic, email, group, password);
+        // studetsService.findAllStudents();
     }
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
@@ -58,6 +59,7 @@ public class MainPageController {
     @RequestMapping(value = "/getallstudents", method = RequestMethod.GET)
     public @ResponseBody
     String getallstudents() {
+        log.info("WE ARE IN CONTROLLER");
         return studetsService.findAllStudents();
     }
 
@@ -76,6 +78,7 @@ public class MainPageController {
 
     @RequestMapping(value = "/testPage", method = RequestMethod.GET)
     public String testPage(@RequestParam(value = "id") String id) {
+        System.out.println("we are trying to get test" + id);
         return "TestPage";
     }
 
@@ -86,17 +89,17 @@ public class MainPageController {
     }
 
     @RequestMapping(value = "/getTest", method = RequestMethod.GET)
-    public ResponseEntity<String> getTest(@RequestParam(value = "testName") String testName) {
+    public ResponseEntity<String> getTest(@RequestParam(value = "testName") String testName) throws IOException {
         return testService.readTest(testName);
     }
 
 
     @RequestMapping(value = "/saveTestResults", method = RequestMethod.POST)
     public @ResponseBody
-    void saveTestResults(@RequestParam(value = "answers") String answers,
-                         @RequestParam(value = "id") String id,
-                         @RequestParam(value = "testName") String testName) throws IOException {
-        testService.saveTestResults(answers, id, testName);
+    String saveTestResults(@RequestParam(value = "answers") String answers,
+                           @RequestParam(value = "id") String id,
+                           @RequestParam(value = "testName") String testName) throws IOException {
+        return testService.saveTestResults(answers, id, testName);
     }
 
 
@@ -124,10 +127,74 @@ public class MainPageController {
 
     @RequestMapping(value = "/getAllTestNames", method = RequestMethod.GET)
     public @ResponseBody
-    String getAllTestNames() {
+    String getAllTestNames(@RequestParam(value = "id") String id) throws IOException {
+        return testService.getAllTestNames(id);
+    }
+
+
+    @RequestMapping(value = "/updateStudent", method = RequestMethod.POST)
+    public @ResponseBody
+    void updateStudent(@RequestParam(value = "id") String id,
+                       @RequestParam(value = "name") String name,
+                       @RequestParam(value = "lastname") String lastname,
+                       @RequestParam(value = "surname") String surname,
+                       @RequestParam(value = "email") String email,
+                       @RequestParam(value = "group") String group
+    ) {
+        System.out.println("name=" + name + " lastname=" + lastname + " surname=" + surname + " email=" + email + " group=" + group + " id=" + id);
+        studetsService.updateSudent(id, name, lastname, surname, email, group);
+    }
+
+    @RequestMapping(value = "/getStudentTests", method = RequestMethod.GET)
+    public @ResponseBody
+    String getStudentTests(@RequestParam(value = "id") String id) throws IOException {
+        return testService.getTestsByStudentId(id);
+    }
+
+    @RequestMapping(value = "/deleteStudentsTest", method = RequestMethod.POST)
+    public @ResponseBody
+    void deleteStudentsTest(@RequestParam(value = "id") String id,
+                            @RequestParam(value = "test_name") String test_name) {
+        System.out.println(id + " " + test_name);
+        testService.deleteTestByNameAndId(id, test_name);
+        //i must create response if all is ok
+    }
+
+    //updateStudentTest
+    @RequestMapping(value = "/updateStudentTest", method = RequestMethod.POST)
+    public @ResponseBody
+    void updateStudentTest(@RequestParam(value = "id") String id,
+                           @RequestParam(value = "test_name") String test_name,
+                           @RequestParam(value = "result") String result) {
+        System.out.println(id + " " + test_name + " res" + result);
+        testService.updateTestByNameAndId(id, test_name, result);
+        //i must create response if all is ok
+    }
+
+    @RequestMapping(value = "/getTestNames", method = RequestMethod.GET)
+    public @ResponseBody
+    String getTestNames() throws IOException {
         return testService.getAllTestNames();
     }
 
+    //updateStudentTest
+    @RequestMapping(value = "/deleteTestByName", method = RequestMethod.POST)
+    public @ResponseBody
+    void deleteTestByName(@RequestParam(value = "testName") String testName) throws IOException {
+        System.out.println(testName);
+        testService.deleteTestByNameEveryWhere(testName);
+        //i must create response if all is ok
+    }
+
+
+    //updateStudentTest
+    @RequestMapping(value = "/addNewAdmin", method = RequestMethod.POST)
+    public @ResponseBody
+    String addNewAdmin(@RequestParam(value = "email") String email,
+                       @RequestParam(value = "password") String password) {
+        System.out.println(email + " " + password);
+        return adminService.saveAdmin(email, password);
+    }
 }
 
 
