@@ -22,7 +22,7 @@
     <packaging>war</packaging>
 
     <properties>
-        <spring.mvc>5.0.0.RELEASE</spring.mvc>
+        <spring.mvc>5.2.20.RELEASE</spring.mvc>
         <spring.securiry>3.2.0.RELEASE</spring.securiry>
     </properties>
 
